@@ -26,7 +26,7 @@ test.describe('Page Layout', () => {
         //await page.getByTestId('SignIn').click();
     })
 
-    test.only('extracting vales', async({page}) => {
+    test('extracting vales', async({page}) => {
         //single text value
         const basicForm = page.locator('nb-card', {hasText: 'Basic form'});
         const buttonText = await basicForm.locator('button').textContent();

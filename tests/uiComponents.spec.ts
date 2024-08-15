@@ -1,4 +1,3 @@
-import { TestabilityRegistry } from '@angular/core';
 import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
