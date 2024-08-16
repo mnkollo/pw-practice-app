@@ -17,7 +17,7 @@ test.describe('Forms - UI Components', () => {
         await usingTheGridEmailInput.pressSequentially('test2@test.com', { delay: 100 })
 
         //generic assertion
-        const inputValue = await usingTheGridEmailInput.inputValue();
+        const inputValue = await usingTheGridEmailInput.inputValue();  //extract text from input field
         expect(inputValue).toEqual('test2@test.com')
 
         //locator assertion
