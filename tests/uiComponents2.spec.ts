@@ -164,4 +164,21 @@ test.describe('Dialog Box', async () => {
             }
         })
     })
+    test.describe('date picker', async () => {
+
+        test.beforeEach('Verify Date picker works as expected', async ({page}) => {
+                await page.getByText('Forms').click()
+                await page.getByText('Datepicker').click()
+        })
+        test('Verify Date picker works as expected', async ({page}) => {
+            const calenderInputField = page.getByPlaceholder('Form Picker')
+            await calenderInputField.click()
+            await page.locator('[class="day-cell ng-star-inserted"]').getByText('19',{exact: true}).click()
+            expect(calenderInputField).toHaveValue('Aug 19, 2024')
+
+            const header = await page.locator('nb-card-header',{hasText: 'Common Datepicker'}).textContent()
+            expect (header).toEqual('Common Datepicker')
+
+        })
+    })
 })
