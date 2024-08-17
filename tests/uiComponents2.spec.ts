@@ -150,20 +150,18 @@ test.describe('Dialog Box', async () => {
             for (let age of ages) {   //loop through each value
                 await page.locator('input-filter').getByPlaceholder('Age').clear()
                 await page.locator('input-filter').getByPlaceholder('Age').fill(age)
-                await page.waitForTimeout(5000)
+                await page.waitForTimeout(1000)
                 const ageRows = page.locator('tbody tr')
 
                 for (let row of await ageRows.all()) {
-                    const cellValue = row.locator('td').last().textContent()
+                    const cellValue = await row.locator('td').last().textContent()
                     if(age === '200'){
-                        expect(page.getByRole('table').textContent()).toContain('No data found')
+                        expect( await page.locator('table tr').last().textContent()).toContain('No data found')
                     }else {
                         expect(cellValue).toEqual(age)
                     }
                 }
             }
-
-
         })
     })
 })
