@@ -77,7 +77,7 @@ test.describe('list and dropdowns', async () => {
         for (const color in colors) { // we use in because we are iterating over the keys of the object
             await optionList.filter({ hasText: color }).click()
             await expect(header).toHaveCSS('background-color', colors[color])
-            if(color != 'Corporate') {
+            if (color != 'Corporate') {
                 await dropDownMenu.click()
             }
         }
@@ -90,8 +90,8 @@ test.describe('Tool Tip', async () => {
         await page.getByText('Tooltip').click()
     })
     test('Validate tool tip', async ({ page }) => {
-        const tooltipCard = page.locator('nb-card',{hasText: 'Tooltip Placements'})
-        await tooltipCard.getByRole('button',{name:'TOP'}).hover()
+        const tooltipCard = page.locator('nb-card', { hasText: 'Tooltip Placements' })
+        await tooltipCard.getByRole('button', { name: 'TOP' }).hover()
         const tooltip = await page.locator('nb-tooltip').textContent()
         expect(tooltip).toEqual('This is a tooltip')
     })
@@ -100,16 +100,70 @@ test.describe('Dialog Box', async () => {
     test.beforeEach('Navigate To Tables Page', async ({ page }) => {
         await page.goto('http://localhost:4200/')
         await page.getByText('Tables & Data').click()
-        await page.locator('a',{hasText:'Smart Table'}).click()
+        await page.locator('a', { hasText: 'Smart Table' }).click()
     })
     test('Validate dialog Box', async ({ page }) => {
-        
+
         page.on('dialog', dialog => {   // we have to use event listener
             expect(dialog.message()).toEqual('Are you sure you want to delete?')
             dialog.accept()
         })
-        const trashCanFirstRow = page.getByRole('table').locator('tr',{hasText: 'mdo@gmail.com'}).locator('.nb-trash')
+        const trashCanFirstRow = page.getByRole('table').locator('tr', { hasText: 'mdo@gmail.com' }).locator('.nb-trash')
         await trashCanFirstRow.click()
         await expect(page.locator('table tr').first()).not.toHaveText('mdo@gmail.com')
+    })
+    test.describe('Web Tables', async () => {
+        test.beforeEach('Navigate To Tables Page', async ({ page }) => {
+            await page.goto('http://localhost:4200/')
+            await page.getByText('Tables & Data').click()
+            await page.locator('a', { hasText: 'Smart Table' }).click()
+        })
+        test('Validate webTable', async ({ page }) => {
+
+            // get row by any text in the row
+            const targetRow = page.getByRole('row', { name: 'snow@gmail.com' })
+            await targetRow.locator('.nb-edit').click()
+            await page.locator('input-editor').getByPlaceholder('Age').clear()
+            await page.locator('input-editor').getByPlaceholder('Age').fill('50')
+            await page.locator('.nb-checkmark').click()
+
+            //select row by ID column
+            // await page.locator('.ng2-smart-pagination').getByText('2').click()
+            // const targetRowById = page.getByRole('row').getByText('11').filter({has: page.locator('td').nth(1).getByText('11')})
+            // await targetRowById.locator('.nb-edit').click()
+
+            // await page.locator('input-editor').getByPlaceholder('E-mail').clear()
+            // await page.locator('input-editor').getByPlaceholder('E-mail').fill('greg@mailinator.com')
+
+            await page.locator('.ng2-smart-pagination-nav').getByText('2').click()
+            const targetRowById = page.getByRole('row', { name: '11' }).filter({ has: page.locator('td').nth(1) }).getByText('11')
+            await page.getByRole('row', { name: '11' }).first().locator('.nb-edit').click()
+            await page.locator('input-editor').getByPlaceholder('E-mail').clear()
+            await page.locator('input-editor').getByPlaceholder('E-mail').fill('hello@test.com')
+            await page.locator('.nb-checkmark').click()
+            await expect(page.getByRole('row', { name: '11' }).first()).toContainText('hello@test.com')
+
+            //3 test filter of the table
+
+            const ages = ['20', '30', '40', '200']
+
+            for (let age of ages) {   //loop through each value
+                await page.locator('input-filter').getByPlaceholder('Age').clear()
+                await page.locator('input-filter').getByPlaceholder('Age').fill(age)
+                await page.waitForTimeout(5000)
+                const ageRows = page.locator('tbody tr')
+
+                for (let row of await ageRows.all()) {
+                    const cellValue = row.locator('td').last().textContent()
+                    if(age === '200'){
+                        expect(page.getByRole('table').textContent()).toContain('No data found')
+                    }else {
+                        expect(cellValue).toEqual(age)
+                    }
+                }
+            }
+
+
+        })
     })
 })
