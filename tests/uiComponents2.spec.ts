@@ -180,5 +180,33 @@ test.describe('Dialog Box', async () => {
             expect (header).toEqual('Common Datepicker')
 
         })
+        test('date with constructor', async({page}) => {
+
+            let date = new Date()   //Date is a javascript object (constructor) that can perform different operations with date and time
+            date.setDate(date.getDate() + 225);
+            const expectedDate = date.getDate().toString();
+            const expectedMonthShort = date.toLocaleString('En-US',{month: 'short'});
+            const expectedMonthLong = date.toLocaleString('En-US',{month: 'long'});
+            const expectedYear = date.getFullYear();
+            const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
+        
+            const calenderInputField = page.getByPlaceholder('Form Picker');
+            await calenderInputField.click();
+
+            let calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent();
+            const expectedMonthAndYear = ` ${expectedMonthLong} ${expectedYear}`;
+            
+
+            while(!calendarMonthAndYear.includes(expectedMonthAndYear)){
+                await page.locator('nb-calendar-pageable-navigation [data-name="chevron-right"]').click()
+                calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent();
+            }
+            await page.locator('[class="day-cell ng-star-inserted"]').getByText(expectedDate,{exact: true}).click();
+            await expect(calenderInputField).toHaveValue(dateToAssert);
+
+            const header = await page.locator('nb-card-header',{hasText: 'Common Datepicker'}).textContent();
+            expect (header).toEqual('Common Datepicker');
+        })
+       
     })
 })
