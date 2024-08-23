@@ -2,8 +2,9 @@ import { expect, test } from '@playwright/test';
 import { NavigationPage } from '../Page/navigationPage';
 import { FormLayoutsPage } from '../Page/formLayoutsPage';
 
-
 test.beforeEach(async ({ page }) => {
+    const navigateTo = new NavigationPage(page);
+
     await page.goto('http://localhost:4200/');
 })
 
@@ -20,6 +21,6 @@ test('parameterized methods', async ({ page }) => {
     const onFormLayoutsPage = new FormLayoutsPage(page);
 
     await navigateTo.formLayoutPage();
-    await onFormLayoutsPage.submitUsingTheGridFormWithCredentialsAndSelectOption('test@test.com', 'Welcome1', 'Option 2');
+    await onFormLayoutsPage.submitUsingTheGridFormWithCredentialsAndSelectOption('test@test.com', 'Welcome1', 'Option 1');
     await onFormLayoutsPage.submitInLineFormWithNameEmailAndCheckbox('Greg Wilson', 'Pickles@test.com', false);
 })

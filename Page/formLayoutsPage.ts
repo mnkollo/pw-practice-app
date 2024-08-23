@@ -1,6 +1,6 @@
-import { Locator, Page } from "@playwright/test"
+import { Page } from "@playwright/test"
 
-export class FormLayoutsPage {
+ export class FormLayoutsPage {
 
     private readonly page: Page;
 
@@ -28,6 +28,6 @@ export class FormLayoutsPage {
         await inlineForm.getByRole('textbox', { name: 'Email' }).fill(email);
         if (rememberMe)
             await inlineForm.getByRole('checkbox').check({ force: true });
-        await inlineForm.getByRole('button').click();
+            await inlineForm.getByRole('button').click();
     }
 }
