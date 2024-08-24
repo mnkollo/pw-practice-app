@@ -1,13 +1,18 @@
 import { Page } from "@playwright/test"
+import { HelperBase } from "./helperBase";
 
- export class FormLayoutsPage {
-
-    private readonly page: Page;
+ export class FormLayoutsPage extends HelperBase {
 
     constructor(page: Page) {
-        this.page = page;
+        super(page)
     }
 
+    /**
+     * 
+     * @param email - put in the email duh
+     * @param password 
+     * @param optionText 
+     */
     async submitUsingTheGridFormWithCredentialsAndSelectOption(email: string, password: string, optionText: string) {
         const usingTheGridForm = this.page.locator('nb-card', { hasText: 'Using the Grid' });
         await usingTheGridForm.locator('#inputEmail1').fill(email);
@@ -26,8 +31,22 @@ import { Page } from "@playwright/test"
         const inlineForm = this.page.locator('nb-card', { hasText: 'Inline form' });
         await inlineForm.getByRole('textbox', { name: 'Jane Doe' }).fill(name);
         await inlineForm.getByRole('textbox', { name: 'Email' }).fill(email);
-        if (rememberMe)
+        if (rememberMe) {
             await inlineForm.getByRole('checkbox').check({ force: true });
             await inlineForm.getByRole('button').click();
+        }
     }
+
+    async submitBasicFormEmailAndPassword(email: string, password: string, checkMeOut: boolean){
+        const basicForm = this.page.locator('nb-card',{hasText: 'Basic form'})
+
+        await basicForm.getByRole('textbox', {name:'Email'}).fill(email)
+        await basicForm.getByRole('textbox', {name:'Password'}).fill(password)
+        if (checkMeOut){
+            await basicForm.getByRole('checkbox').check({ force: true})
+            await basicForm.getByRole('button').click()
+        }
+    }
+    
+
 }

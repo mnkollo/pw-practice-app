@@ -1,26 +1,37 @@
-import { expect, test } from '@playwright/test';
+import { test } from '@playwright/test';
+import { PageManager } from '../Page/pageManager';
 import { NavigationPage } from '../Page/navigationPage';
-import { FormLayoutsPage } from '../Page/formLayoutsPage';
+
 
 test.beforeEach(async ({ page }) => {
-    const navigateTo = new NavigationPage(page);
 
     await page.goto('http://localhost:4200/');
 })
-
 test('naviage to form page', async ({ page }) => {
-    const navigateTo = new NavigationPage(page);
+    const pm = new PageManager(page)
 
-    await navigateTo.formLayoutPage();
-    await navigateTo.datepickerPage();
-    await navigateTo.smartTablePage();
-    await navigateTo.toastrPage();
+    await pm.navigateTo().formLayoutPage();
+    await pm.navigateTo().datepickerPage();
+    await pm.navigateTo().smartTablePage();
+    await pm.navigateTo().toastrPage();
 })
 test('parameterized methods', async ({ page }) => {
-    const navigateTo = new NavigationPage(page);
-    const onFormLayoutsPage = new FormLayoutsPage(page);
+    const pm = new PageManager(page)
 
-    await navigateTo.formLayoutPage();
-    await onFormLayoutsPage.submitUsingTheGridFormWithCredentialsAndSelectOption('test@test.com', 'Welcome1', 'Option 1');
-    await onFormLayoutsPage.submitInLineFormWithNameEmailAndCheckbox('Greg Wilson', 'Pickles@test.com', false);
+    await pm.navigateTo().formLayoutPage();
+    await pm.onFormLayoutsPage().submitUsingTheGridFormWithCredentialsAndSelectOption('test@test.com', 'Welcome1', 'Option 1');
+    await pm.onFormLayoutsPage().submitInLineFormWithNameEmailAndCheckbox('Greg Wilson', 'Pickles@test.com', true);
+})
+test('parameterized methods test', async ({ page }) => {
+    const pm = new PageManager(page)
+
+    await pm.navigateTo().formLayoutPage();
+    await pm.onFormLayoutsPage().submitBasicFormEmailAndPassword('test@test.com', 'Welcome1', true);
+})
+test('Common Datepicker', async ({ page }) => {
+    const pm = new PageManager(page)
+
+    await pm.navigateTo().datepickerPage();
+    await pm.onDatePickerPage().selectCommonDatePickerDateFromToday(10);
+    await pm.onDatePickerPage().selectDatePickerWithRangeFromToday(1,9)
 })
