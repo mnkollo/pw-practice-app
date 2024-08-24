@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 import { PageManager } from '../Page/pageManager';
-import { NavigationPage } from '../Page/navigationPage';
+import { faker } from '@faker-js/faker';
 
 
 test.beforeEach(async ({ page }) => {
@@ -17,10 +17,12 @@ test('naviage to form page', async ({ page }) => {
 })
 test('parameterized methods', async ({ page }) => {
     const pm = new PageManager(page)
-
+    const randomFullName = faker.person.fullName({ firstName: 'Michael'});
+    const randomEmail = `${randomFullName.replace(' ','')}${faker.number.int(1000)} @test.com`;
+    
     await pm.navigateTo().formLayoutPage();
     await pm.onFormLayoutsPage().submitUsingTheGridFormWithCredentialsAndSelectOption('test@test.com', 'Welcome1', 'Option 1');
-    await pm.onFormLayoutsPage().submitInLineFormWithNameEmailAndCheckbox('Greg Wilson', 'Pickles@test.com', true);
+    await pm.onFormLayoutsPage().submitInLineFormWithNameEmailAndCheckbox(randomFullName, randomEmail, true);
 })
 test('parameterized methods test', async ({ page }) => {
     const pm = new PageManager(page)

@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:4200/');
 })
-test.describe('Forms - UI Components', () => {
+test.describe.only('Forms - UI Components', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.getByText('Forms').click();
@@ -18,7 +18,7 @@ test.describe('Forms - UI Components', () => {
 
         //generic assertion
         const inputValue = await usingTheGridEmailInput.inputValue();  //extract text from input field
-        expect(inputValue).toEqual('test2@test.com')
+        expect(inputValue).toEqual('test21@test.com')
 
         //locator assertion
         await expect(usingTheGridEmailInput).toHaveValue('test2@test.com')
