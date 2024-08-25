@@ -14,7 +14,7 @@ test.describe.only('Forms - UI Components', () => {
 
         await usingTheGridEmailInput.fill('test@test.com')
         await usingTheGridEmailInput.clear()
-        await usingTheGridEmailInput.pressSequentially('test2@test.com', { delay: 100 })
+        await usingTheGridEmailInput.pressSequentially('test2@test.com')
 
         //generic assertion
         const inputValue = await usingTheGridEmailInput.inputValue();  //extract text from input field

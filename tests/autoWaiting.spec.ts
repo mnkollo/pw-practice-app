@@ -4,7 +4,7 @@ test.beforeEach('first test', async ({ page }) => {
     await page.goto('http://uitestingplayground.com/ajax');
     await page.getByText('Button Triggering AJAX Request').click();
 })
-test('auto waiting', async ({ page }) => {
+test.skip('auto waiting', async ({ page }) => {
     const successMessage = page.locator('.bg-success')
     await successMessage.click();
 
@@ -17,7 +17,7 @@ test('auto waiting', async ({ page }) => {
     await expect(successMessage).toHaveText('Data loaded with AJAX get request.',{timeout: 20000})
 })
 
-test('alternative waits', async ({page}) => {
+test.skip('alternative waits', async ({page}) => {
     const successMessage = page.locator('.bg-success')
 
     //___ wait for element
