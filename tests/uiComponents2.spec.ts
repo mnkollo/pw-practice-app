@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 
 test.describe('Form Layout Page', async () => {
     test.beforeEach('Navigate To Forms', async ({ page }) => {
-        await page.goto('http://localhost:4200/')
+        await page.goto('/')
         await page.getByText('Forms').click()
         await page.getByText('Form Layouts').click()
     })
@@ -28,7 +28,7 @@ test.describe('Form Layout Page', async () => {
 })
 test.describe('Checkboxes', async () => {
     test.beforeEach('Navigate To Toastr', async ({ page }) => {
-        await page.goto('http://localhost:4200/')
+        await page.goto('/')
         await page.getByText('Modal & Overlays').click()
         await page.getByText('Toastr').click()
     })
@@ -49,7 +49,7 @@ test.describe('Checkboxes', async () => {
 })
 test.describe('list and dropdowns', async () => {
     test.beforeEach('Open Site', async ({ page }) => {
-        await page.goto('http://localhost:4200/')
+        await page.goto('/')
     })
     test('Validate color changes on webpage when switching dropdown', async ({ page }) => {
         const dropDownMenu = page.locator('ngx-header nb-select')
@@ -85,7 +85,7 @@ test.describe('list and dropdowns', async () => {
 })
 test.describe('Tool Tip', async () => {
     test.beforeEach('Navigate To Tool Tips Page', async ({ page }) => {
-        await page.goto('http://localhost:4200/')
+        await page.goto('/')
         await page.getByText('Modal & Overlays').click()
         await page.getByText('Tooltip').click()
     })
@@ -98,7 +98,7 @@ test.describe('Tool Tip', async () => {
 })
 test.describe('Dialog Box', async () => {
     test.beforeEach('Navigate To Tables Page', async ({ page }) => {
-        await page.goto('http://localhost:4200/')
+        await page.goto('/')
         await page.getByText('Tables & Data').click()
         await page.locator('a', { hasText: 'Smart Table' }).click()
     })
@@ -114,7 +114,7 @@ test.describe('Dialog Box', async () => {
     })
     test.describe('Web Tables', async () => {
         test.beforeEach('Navigate To Tables Page', async ({ page }) => {
-            await page.goto('http://localhost:4200/')
+            await page.goto('/')
             await page.getByText('Tables & Data').click()
             await page.locator('a', { hasText: 'Smart Table' }).click()
         })
