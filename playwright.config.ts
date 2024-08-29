@@ -1,66 +1,48 @@
 import { defineConfig, devices } from '@playwright/test';
 import type { TestOptions } from './test-options';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
 require('dotenv').config();
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig<TestOptions>({
-  // timeout: 10000,
-  // globalTimeout: 300000,
-  testDir: './tests',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 1,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:4200/',
-    globalsQaURL: 'https://www.globalsqa.com/demo-site/draganddrop/',
+  timeout: 40000,
+  globalTimeout: 60000,
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-    // actionTimeout: 5000,
-    // navigationTimeout: 5000,
-    video: 'on',
+  expect: {
+    timeout: 2000
   },
+  retries: 1,
+  reporter: 'html',
+  use: {
+    globalsQaURL: 'https://www.globalsqa.com/demo-site/draganddrop/',
+    baseURL: process.env.DEV === '1' ? 'http://localhost:4201/'
+      : process.env.STAGING === '1' ? 'http://localhost:4202/'
+        : 'http://localhost:4200/',
 
-  /* Configure projects for major browsers */
+    trace: 'on-first-retry',
+    actionTimeout: 20000,
+    navigationTimeout: 25000,
+    video: {
+      mode: 'off',
+      size: { width: 1920, height: 1080 },
+    },
+  },
   projects: [
     {
       name: 'dev',
-      use: { 
+      use: {
         ...devices['Desktop Chrome'],
         baseURL: 'http://localhost:4200/',
       },
     },
     {
-      name: 'staging',
-      use: { 
-        ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:4202/',
-      },
-    },
-    {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { 
+        browserName: 'firefox',
+      },
     },
 
     // {
